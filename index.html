@@ -3,23 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>홍제동 아르바이트 매뉴얼</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<title>홍제동 알바 매뉴얼</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0B1220;
-  --card: #131D2E;
-  --card2: #1A2540;
-  --orange: #FF6B35;
-  --amber: #F5A623;
-  --teal: #00C9A7;
-  --blue: #4A9EFF;
-  --pink: #FF5FA0;
-  --green: #4CAF50;
-  --text: #E8F0FE;
-  --muted: #8898B0;
+  --bg:      #0C0C0C;
+  --surface: #141414;
+  --card:    #1A1A1A;
+  --border:  rgba(255,255,255,0.08);
+  --lime:    #C8FF00;
+  --red:     #FF3355;
+  --cyan:    #00E5CC;
+  --amber:   #FFB700;
+  --blue:    #4D9EFF;
+  --purple:  #A78BFA;
+  --text:    #F0F0F0;
+  --muted:   #666;
+  --muted2:  #444;
 }
+
 * { margin:0; padding:0; box-sizing:border-box; }
+
 body {
   font-family: 'Noto Sans KR', sans-serif;
   background: var(--bg);
@@ -28,313 +32,460 @@ body {
   overflow-x: hidden;
 }
 
-/* ── PAGES ── */
-.page { display:none; min-height:100vh; padding:40px 48px 80px; }
-.page.active { display:block; }
+/* ── GRAIN OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+}
 
-/* ── BACK BTN ── */
-.back-btn {
-  display: inline-flex;
+/* ── TOP NAV ── */
+.topnav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(12,12,12,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  height: 52px;
+  padding: 0 32px;
+  gap: 4px;
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--lime);
+  text-transform: uppercase;
+  margin-right: 24px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.nav-tabs {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+.nav-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+.nav-tab:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+.nav-tab.active { color: var(--bg); background: var(--lime); }
+.nav-tab.active .tab-icon { opacity: 1; }
+.tab-icon { font-size: 13px; opacity: 0.7; }
+
+/* ── PAGE WRAPPER ── */
+.page { display: none; padding: 88px 48px 80px; min-height: 100vh; }
+.page.active { display: block; animation: revealPage 0.35s cubic-bezier(0.16,1,0.3,1) both; }
+@keyframes revealPage {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SECTION HEADER ── */
+.sec-header {
+  margin-bottom: 44px;
+  position: relative;
+}
+.sec-num {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 120px;
+  line-height: 1;
+  color: var(--lime);
+  opacity: 0.06;
+  position: absolute;
+  top: -30px; left: -10px;
+  pointer-events: none;
+  letter-spacing: -4px;
+}
+.sec-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 8px;
+  display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: var(--muted);
+}
+.sec-tag::before {
+  content: '';
+  display: inline-block;
+  width: 24px; height: 1px;
+  background: var(--lime);
+}
+.sec-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 48px;
+  line-height: 1.05;
+  color: var(--text);
+}
+.sec-title .acc { color: var(--lime); }
+
+/* ── STEP LIST ── */
+.step-list { display: flex; flex-direction: column; gap: 10px; max-width: 700px; }
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  transition: border-color 0.2s;
+}
+.step-item:hover { border-color: rgba(200,255,0,0.2); }
+.step-badge {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
   font-size: 13px;
-  font-family: 'Noto Sans KR', sans-serif;
-  padding: 8px 16px;
-  border-radius: 50px;
-  cursor: pointer;
-  margin-bottom: 32px;
-  transition: all 0.2s;
+  min-width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  color: var(--bg);
 }
-.back-btn:hover { background: rgba(255,107,53,0.15); color: var(--orange); border-color: var(--orange); }
+.step-body { flex: 1; }
+.step-body strong { display: block; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+.step-body p { font-size: 13px; color: var(--muted); line-height: 1.8; font-weight: 300; }
 
-/* ══════════════════════════════
-   HOME PAGE
-══════════════════════════════ */
-#home {
-  background: radial-gradient(ellipse at 80% 20%, rgba(255,107,53,0.12) 0%, transparent 50%),
-              radial-gradient(ellipse at 10% 80%, rgba(74,158,255,0.08) 0%, transparent 50%),
-              var(--bg);
-}
+/* ── HIGHLIGHTS ── */
+.hi   { color: var(--amber); font-weight: 600; }
+.warn { color: var(--red);   font-weight: 600; }
+.ok   { color: var(--cyan);  font-weight: 600; }
 
-.home-header {
-  margin-bottom: 52px;
-  animation: fadeUp 0.6s ease both;
+/* ── NOTE ── */
+.note {
+  border-left: 3px solid var(--amber);
+  background: rgba(255,183,0,0.06);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #BFA060;
+  line-height: 1.8;
+  margin-top: 16px;
+  max-width: 700px;
 }
-.home-eyebrow {
-  font-size: 11px;
+.note strong { color: var(--amber); }
+
+/* ── TWO COL ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.col-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
   font-weight: 700;
-  letter-spacing: 6px;
-  color: var(--orange);
+  letter-spacing: 4px;
   text-transform: uppercase;
-  margin-bottom: 12px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+}
+
+/* ── INFO TABLE ── */
+.info-tbl { width: 100%; border-collapse: separate; border-spacing: 0 6px; }
+.info-tbl td { padding: 10px 14px; font-size: 13px; vertical-align: middle; line-height: 1.6; }
+.info-tbl td:first-child {
+  background: var(--card);
+  border-radius: 8px 0 0 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--muted);
+  width: 100px; white-space: nowrap;
+}
+.info-tbl td:last-child {
+  background: var(--surface);
+  border-radius: 0 8px 8px 0;
+  color: var(--text);
+  font-weight: 300;
+}
+.info-tbl td:last-child strong { font-weight: 700; color: var(--text); }
+
+/* ── CARD GRID ── */
+.card-grid { display: grid; gap: 12px; }
+.g2 { grid-template-columns: 1fr 1fr; }
+.g3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.info-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.info-card:hover { border-color: rgba(200,255,0,0.15); transform: translateY(-2px); }
+.c-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  margin-bottom: 8px; opacity: 0.7;
+}
+.c-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: var(--text); margin-bottom: 10px; }
+.c-body { font-size: 13px; color: var(--muted); line-height: 1.9; font-weight: 300; }
+.c-body strong { color: var(--text); font-weight: 500; }
+
+/* card top accents */
+.ca-lime   { border-top: 2px solid var(--lime); }
+.ca-red    { border-top: 2px solid var(--red); }
+.ca-cyan   { border-top: 2px solid var(--cyan); }
+.ca-amber  { border-top: 2px solid var(--amber); }
+.ca-blue   { border-top: 2px solid var(--blue); }
+.ca-purple { border-top: 2px solid var(--purple); }
+
+/* ── SUB MENU ── */
+.sub-menu { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 28px; }
+.sub-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 16px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.sub-card:hover {
+  background: rgba(200,255,0,0.08);
+  border-color: rgba(200,255,0,0.3);
+}
+.sub-icon { font-size: 24px; margin-bottom: 10px; display: block; }
+.sub-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.sub-desc { font-size: 11px; color: var(--muted); font-weight: 300; line-height: 1.5; }
+.sub-content { display: none; animation: revealPage 0.3s ease both; }
+.sub-content.active { display: block; }
+.sub-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px;
+  color: var(--muted); background: none; border: none; cursor: pointer;
+  margin-bottom: 20px; padding: 0; text-transform: uppercase;
+  transition: color 0.15s;
+}
+.sub-back:hover { color: var(--lime); }
+
+/* ── CHECKLIST ── */
+.check-list { display: flex; flex-direction: column; gap: 6px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px; font-weight: 300; color: var(--muted);
+  line-height: 1.6;
+  transition: border-color 0.15s;
+}
+.check-item:hover { border-color: rgba(200,255,0,0.15); }
+.check-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 6px;
+}
+
+/* ════════════════════════════
+   HOME PAGE
+════════════════════════════ */
+#home {
+  padding-top: 80px;
+  background:
+    radial-gradient(ellipse 60% 50% at 90% 10%, rgba(200,255,0,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 5% 90%, rgba(0,229,204,0.04) 0%, transparent 60%),
+    var(--bg);
+}
+.home-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 5px; text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.home-kicker::before {
+  content: '';
+  display: inline-block;
+  width: 32px; height: 1px;
+  background: var(--lime);
 }
 .home-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 72px;
-  line-height: 1;
-  color: #fff;
-  letter-spacing: 2px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 80px;
+  line-height: 0.95;
+  color: var(--text);
+  letter-spacing: -2px;
+  margin-bottom: 16px;
 }
-.home-title span { color: var(--orange); }
+.home-title .acc { color: var(--lime); }
 .home-sub {
-  font-size: 14px;
-  color: var(--muted);
-  margin-top: 10px;
-  font-weight: 300;
-  letter-spacing: 1px;
+  font-size: 14px; font-weight: 300;
+  color: var(--muted); letter-spacing: 0.5px;
+  margin-bottom: 56px;
 }
-
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  max-width: 900px;
+  gap: 14px;
+  max-width: 840px;
 }
-
 .menu-card {
   background: var(--card);
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 16px;
-  padding: 32px 28px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 24px;
   cursor: pointer;
-  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
-  position: relative;
-  overflow: hidden;
-  animation: fadeUp 0.5s ease both;
+  transition: all 0.22s cubic-bezier(0.16,1,0.3,1);
+  position: relative; overflow: hidden;
 }
 .menu-card::before {
   content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  border-radius: 16px 16px 0 0;
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px; border-radius: 14px 14px 0 0;
 }
-.menu-card:hover { transform: translateY(-6px); }
+.menu-card:hover { transform: translateY(-5px); }
+.mc-lime::before   { background: var(--lime); }
+.mc-amber::before  { background: var(--amber); }
+.mc-cyan::before   { background: var(--cyan); }
+.mc-red::before    { background: var(--red); }
+.mc-blue::before   { background: var(--blue); }
+.mc-purple::before { background: var(--purple); }
+.mc-lime:hover   { border-color: rgba(200,255,0,0.25);  box-shadow: 0 20px 48px rgba(200,255,0,0.07); }
+.mc-amber:hover  { border-color: rgba(255,183,0,0.25);  box-shadow: 0 20px 48px rgba(255,183,0,0.07); }
+.mc-cyan:hover   { border-color: rgba(0,229,204,0.25);  box-shadow: 0 20px 48px rgba(0,229,204,0.07); }
+.mc-red:hover    { border-color: rgba(255,51,85,0.25);  box-shadow: 0 20px 48px rgba(255,51,85,0.07); }
+.mc-blue:hover   { border-color: rgba(77,158,255,0.25); box-shadow: 0 20px 48px rgba(77,158,255,0.07); }
+.mc-purple:hover { border-color: rgba(167,139,250,0.25);box-shadow: 0 20px 48px rgba(167,139,250,0.07); }
+.menu-icon { font-size: 34px; margin-bottom: 14px; display: block; }
+.menu-card-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; color: var(--text); margin-bottom: 8px; }
+.menu-card-desc { font-size: 12px; font-weight: 300; color: var(--muted); line-height: 1.7; }
+.menu-card-arrow {
+  position: absolute; bottom: 20px; right: 20px;
+  font-size: 18px; color: rgba(255,255,255,0.1);
+  transition: all 0.22s;
+}
+.menu-card:hover .menu-card-arrow { color: var(--lime); transform: translateX(3px); }
+
+/* ── ANIMATIONS ── */
+.menu-card { animation: fadeUp 0.5s ease both; }
 .menu-card:nth-child(1){animation-delay:.05s}
 .menu-card:nth-child(2){animation-delay:.10s}
 .menu-card:nth-child(3){animation-delay:.15s}
 .menu-card:nth-child(4){animation-delay:.20s}
 .menu-card:nth-child(5){animation-delay:.25s}
 .menu-card:nth-child(6){animation-delay:.30s}
-
-.menu-icon { font-size:36px; margin-bottom:16px; display:block; line-height:1; }
-.menu-card-title { font-size:22px; font-weight:900; color:#fff; margin-bottom:8px; }
-.menu-card-desc { font-size:12px; font-weight:300; color:var(--muted); line-height:1.7; }
-.menu-card-arrow {
-  position:absolute; bottom:24px; right:24px;
-  font-size:20px; color:rgba(255,255,255,0.15);
-  transition: all 0.25s;
-}
-.menu-card:hover .menu-card-arrow { color:var(--orange); transform:translateX(4px); }
-
-.c-orange::before { background: linear-gradient(90deg, var(--orange), var(--amber)); }
-.c-teal::before   { background: var(--teal); }
-.c-blue::before   { background: var(--blue); }
-.c-amber::before  { background: var(--amber); }
-.c-pink::before   { background: var(--pink); }
-.c-green::before  { background: var(--green); }
-
-.c-orange:hover { border-color:rgba(255,107,53,0.4); box-shadow:0 20px 60px rgba(255,107,53,0.12); }
-.c-teal:hover   { border-color:rgba(0,201,167,0.4);  box-shadow:0 20px 60px rgba(0,201,167,0.12); }
-.c-blue:hover   { border-color:rgba(74,158,255,0.4); box-shadow:0 20px 60px rgba(74,158,255,0.12); }
-.c-amber:hover  { border-color:rgba(245,166,35,0.4); box-shadow:0 20px 60px rgba(245,166,35,0.12); }
-.c-pink:hover   { border-color:rgba(255,95,160,0.4); box-shadow:0 20px 60px rgba(255,95,160,0.12); }
-.c-green:hover  { border-color:rgba(76,175,80,0.4);  box-shadow:0 20px 60px rgba(76,175,80,0.12); }
-
-/* ══════════════════════════════
-   DETAIL COMMON
-══════════════════════════════ */
-.detail-header { margin-bottom:36px; animation: fadeUp 0.4s ease both; }
-.detail-eyebrow { font-size:10px; letter-spacing:5px; font-weight:700; text-transform:uppercase; margin-bottom:8px; }
-.detail-title { font-family:'Bebas Neue',sans-serif; font-size:56px; color:#fff; letter-spacing:2px; line-height:1; }
-.detail-title .accent { color:var(--orange); }
-
-.step-list { display:flex; flex-direction:column; gap:12px; max-width:760px; }
-.step-item {
-  display:flex; align-items:flex-start; gap:16px;
-  background:var(--card); border-radius:12px; padding:18px 20px;
-  border:1px solid rgba(255,255,255,0.05);
-  animation: fadeUp 0.4s ease both;
-}
-.step-item:nth-child(1){animation-delay:.05s}
-.step-item:nth-child(2){animation-delay:.10s}
-.step-item:nth-child(3){animation-delay:.15s}
-.step-item:nth-child(4){animation-delay:.20s}
-.step-item:nth-child(5){animation-delay:.25s}
-.step-item:nth-child(6){animation-delay:.30s}
-.step-item:nth-child(7){animation-delay:.35s}
-.step-item:nth-child(8){animation-delay:.40s}
-
-.step-badge {
-  min-width:34px; height:34px; border-radius:50%;
-  font-size:14px; font-weight:900;
-  display:flex; align-items:center; justify-content:center;
-  flex-shrink:0; color:#fff;
-}
-.step-body { flex:1; }
-.step-body strong { display:block; font-size:14px; font-weight:700; color:#fff; margin-bottom:4px; }
-.step-body p { font-size:13px; font-weight:300; color:#A8BCCF; line-height:1.8; }
-.step-body .hi   { color:var(--amber); font-weight:700; }
-.step-body .warn { color:var(--pink);  font-weight:700; }
-.step-body .ok   { color:var(--teal);  font-weight:700; }
-
-.info-tbl { width:100%; border-collapse:separate; border-spacing:0 6px; max-width:600px; }
-.info-tbl td { padding:12px 16px; font-size:13px; vertical-align:top; line-height:1.7; }
-.info-tbl td:first-child {
-  background:var(--card2); border-radius:8px 0 0 8px;
-  font-weight:700; color:var(--amber); width:130px; white-space:nowrap;
-}
-.info-tbl td:last-child {
-  background:var(--card); border-radius:0 8px 8px 0;
-  color:#A8BCCF; font-weight:300;
-}
-.info-tbl td:last-child strong { color:var(--text); font-weight:600; }
-.info-tbl td:last-child .hi   { color:var(--amber); font-weight:700; }
-
-.note {
-  background:rgba(245,166,35,0.08); border-left:3px solid var(--amber);
-  border-radius:0 8px 8px 0; padding:12px 16px;
-  font-size:13px; color:#C4A86A; line-height:1.8;
-  margin-top:16px; max-width:760px;
-  animation: fadeUp 0.4s ease 0.4s both;
-}
-.note strong { color:var(--amber); }
-
-.two-col { display:grid; grid-template-columns:1fr 1fr; gap:28px; max-width:900px; }
-.col-label {
-  font-size:10px; font-weight:700; letter-spacing:4px; text-transform:uppercase;
-  margin-bottom:14px; padding-bottom:8px;
-}
-
-.card-grid { display:grid; gap:16px; max-width:900px; }
-.g2 { grid-template-columns:1fr 1fr; }
-.g3 { grid-template-columns:1fr 1fr 1fr; }
-
-.info-card {
-  background:var(--card); border:1px solid rgba(255,255,255,0.06);
-  border-radius:12px; padding:20px 24px;
-  animation: fadeUp 0.4s ease both;
-}
-.info-card:nth-child(1){animation-delay:.05s}
-.info-card:nth-child(2){animation-delay:.12s}
-.info-card:nth-child(3){animation-delay:.19s}
-.info-card:nth-child(4){animation-delay:.26s}
-.info-card:nth-child(5){animation-delay:.33s}
-.info-card:nth-child(6){animation-delay:.40s}
-
-.info-card .label { font-size:9px; font-weight:700; letter-spacing:4px; text-transform:uppercase; margin-bottom:8px; opacity:.7; }
-.info-card .title { font-size:15px; font-weight:700; color:#fff; margin-bottom:10px; }
-.info-card .body  { font-size:13px; font-weight:300; color:#A8BCCF; line-height:1.9; }
-.info-card .body strong { color:var(--text); font-weight:500; }
-.info-card .body .hi   { color:var(--amber); font-weight:700; }
-.info-card .body .warn { color:var(--pink);  font-weight:700; }
-.info-card .body .ok   { color:var(--teal);  font-weight:700; }
-.bt-orange { border-top:3px solid var(--orange); }
-.bt-teal   { border-top:3px solid var(--teal); }
-.bt-blue   { border-top:3px solid var(--blue); }
-.bt-amber  { border-top:3px solid var(--amber); }
-.bt-pink   { border-top:3px solid var(--pink); }
-.bt-green  { border-top:3px solid var(--green); }
-
-/* 요리 서브메뉴 */
-.sub-menu { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; max-width:760px; margin-bottom:32px; }
-.sub-card {
-  background:var(--card); border:1px solid rgba(255,255,255,0.07);
-  border-radius:12px; padding:20px;
-  cursor:pointer; transition:all 0.2s;
-  animation: fadeUp 0.4s ease both;
-}
-.sub-card:nth-child(1){animation-delay:.05s}
-.sub-card:nth-child(2){animation-delay:.12s}
-.sub-card:nth-child(3){animation-delay:.19s}
-.sub-card:nth-child(4){animation-delay:.26s}
-.sub-card:hover { transform:translateY(-4px); border-color:rgba(255,107,53,0.4); box-shadow:0 12px 40px rgba(255,107,53,0.1); }
-.sub-card .sub-icon { font-size:28px; margin-bottom:10px; display:block; }
-.sub-card .sub-title { font-size:14px; font-weight:700; color:#fff; margin-bottom:4px; }
-.sub-card .sub-desc  { font-size:11px; color:var(--muted); font-weight:300; }
-
-.sub-content { display:none; }
-.sub-content.active { display:block; animation: fadeUp 0.35s ease both; }
-
-.sub-back {
-  display:inline-flex; align-items:center; gap:6px;
-  color:var(--muted); font-size:12px; cursor:pointer;
-  margin-bottom:20px;
-  background:none; border:none; font-family:'Noto Sans KR',sans-serif;
-  transition:color 0.2s;
-}
-.sub-back:hover { color:var(--orange); }
-
-.check-list { display:flex; flex-direction:column; gap:8px; max-width:480px; }
-.check-item {
-  display:flex; align-items:flex-start; gap:12px;
-  background:var(--card2); border-radius:8px;
-  padding:12px 16px; font-size:13px; color:#A8BCCF; font-weight:300;
-  animation: fadeUp 0.4s ease both;
-}
-.check-item:nth-child(1){animation-delay:.05s}
-.check-item:nth-child(2){animation-delay:.10s}
-.check-item:nth-child(3){animation-delay:.15s}
-.check-item:nth-child(4){animation-delay:.20s}
-.check-item:nth-child(5){animation-delay:.25s}
-.check-item:nth-child(6){animation-delay:.30s}
-.check-item:nth-child(7){animation-delay:.35s}
-.check-item:nth-child(8){animation-delay:.40s}
-.check-item:nth-child(9){animation-delay:.45s}
-.check-item:nth-child(10){animation-delay:.50s}
-.check-item strong { color:var(--text); font-weight:600; }
-.check-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
-
+.step-item  { animation: fadeUp 0.4s ease both; }
+.step-item:nth-child(1){animation-delay:.04s}
+.step-item:nth-child(2){animation-delay:.09s}
+.step-item:nth-child(3){animation-delay:.14s}
+.step-item:nth-child(4){animation-delay:.19s}
+.step-item:nth-child(5){animation-delay:.24s}
+.step-item:nth-child(6){animation-delay:.29s}
+.step-item:nth-child(7){animation-delay:.34s}
+.step-item:nth-child(8){animation-delay:.39s}
+.info-card { animation: fadeUp 0.4s ease both; }
+.info-card:nth-child(1){animation-delay:.04s}
+.info-card:nth-child(2){animation-delay:.10s}
+.info-card:nth-child(3){animation-delay:.16s}
+.info-card:nth-child(4){animation-delay:.22s}
+.info-card:nth-child(5){animation-delay:.28s}
+.info-card:nth-child(6){animation-delay:.34s}
 @keyframes fadeUp {
-  from { opacity:0; transform:translateY(14px); }
-  to   { opacity:1; transform:translateY(0); }
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── MOBILE ── */
+@media (max-width: 720px) {
+  .topnav { padding: 0 16px; }
+  .nav-logo { font-size: 11px; margin-right: 12px; }
+  .nav-tab { padding: 6px 10px; font-size: 11px; }
+  .page { padding: 76px 20px 60px; }
+  .home-title { font-size: 52px; }
+  .sec-title { font-size: 36px; }
+  .menu-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .two-col { grid-template-columns: 1fr; gap: 28px; }
+  .g3 { grid-template-columns: 1fr 1fr; }
+  .sub-menu { grid-template-columns: 1fr 1fr; }
+  .sec-num { font-size: 80px; top: -20px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ════════════ HOME ════════════ -->
-<div class="page active" id="home">
-  <div class="home-header">
-    <div class="home-eyebrow">업무 가이드 · 2025</div>
-    <div class="home-title">홍제동 <span>알바</span> 매뉴얼</div>
-    <div class="home-sub">메뉴를 클릭해 세부 내용을 확인하세요</div>
+<!-- ════ TOP NAV ════ -->
+<nav class="topnav">
+  <div class="nav-logo">알바매뉴얼</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="go('home')"><span class="tab-icon">⊞</span> 홈</button>
+    <button class="nav-tab" onclick="go('open')"><span class="tab-icon">🔓</span> 오픈</button>
+    <button class="nav-tab" onclick="go('settle')"><span class="tab-icon">💰</span> 정산</button>
+    <button class="nav-tab" onclick="go('clean')"><span class="tab-icon">🧹</span> 청소</button>
+    <button class="nav-tab" onclick="go('cook')"><span class="tab-icon">🍳</span> 요리</button>
+    <button class="nav-tab" onclick="go('close')"><span class="tab-icon">🌙</span> 오픈/마감</button>
+    <button class="nav-tab" onclick="go('etc')"><span class="tab-icon">📋</span> 기타</button>
   </div>
+</nav>
+
+<!-- ════ HOME ════ -->
+<div class="page active" id="home">
+  <div class="home-kicker">업무 가이드 · 2025 · 홍제동</div>
+  <div class="home-title">홍제동<br><span class="acc">알바</span><br>매뉴얼</div>
+  <div class="home-sub">탭을 클릭해 세부 내용을 확인하세요</div>
   <div class="menu-grid">
-    <div class="menu-card c-orange" onclick="go('open')">
+    <div class="menu-card mc-lime" onclick="go('open')">
       <span class="menu-icon">🔓</span>
       <div class="menu-card-title">오픈</div>
       <div class="menu-card-desc">출근 직후 해야 할 일<br>불 켜기, 무인 해제, 열쇠 관리</div>
       <div class="menu-card-arrow">→</div>
     </div>
-    <div class="menu-card c-amber" onclick="go('settle')">
+    <div class="menu-card mc-amber" onclick="go('settle')">
       <span class="menu-icon">💰</span>
       <div class="menu-card-title">정산</div>
       <div class="menu-card-desc">1·2·3차 정산 방법<br>봉투 작성, 근무교대 절차</div>
       <div class="menu-card-arrow">→</div>
     </div>
-    <div class="menu-card c-teal" onclick="go('clean')">
+    <div class="menu-card mc-cyan" onclick="go('clean')">
       <span class="menu-icon">🧹</span>
       <div class="menu-card-title">청소</div>
       <div class="menu-card-desc">오픈 청소 6단계<br>흡연실, 화장실, 라인, 계단</div>
       <div class="menu-card-arrow">→</div>
     </div>
-    <div class="menu-card c-pink" onclick="go('cook')">
+    <div class="menu-card mc-red" onclick="go('cook')">
       <span class="menu-icon">🍳</span>
       <div class="menu-card-title">요리</div>
       <div class="menu-card-desc">기본 조리법, 메뉴별 레시피<br>음료 제조까지</div>
       <div class="menu-card-arrow">→</div>
     </div>
-    <div class="menu-card c-blue" onclick="go('close')">
+    <div class="menu-card mc-blue" onclick="go('close')">
       <span class="menu-icon">🌙</span>
       <div class="menu-card-title">오픈 / 마감</div>
       <div class="menu-card-desc">오픈·마감 체크리스트<br>순서대로 따라하기</div>
       <div class="menu-card-arrow">→</div>
     </div>
-    <div class="menu-card c-green" onclick="go('etc')">
+    <div class="menu-card mc-purple" onclick="go('etc')">
       <span class="menu-icon">📋</span>
       <div class="menu-card-title">기타</div>
       <div class="menu-card-desc">비밀번호, 단골 손님<br>행주 구분, 배송 처리</div>
@@ -343,31 +494,31 @@ body {
   </div>
 </div>
 
-<!-- ════════════ 오픈 ════════════ -->
+<!-- ════ 오픈 ════ -->
 <div class="page" id="open">
-  <button class="back-btn" onclick="go('home')">← 메인으로</button>
-  <div class="detail-header">
-    <div class="detail-eyebrow" style="color:var(--orange)">SECTION 01</div>
-    <div class="detail-title">오픈 <span class="accent">절차</span></div>
+  <div class="sec-header">
+    <div class="sec-num">01</div>
+    <div class="sec-tag">Opening Procedure</div>
+    <div class="sec-title">오픈 <span class="acc">절차</span></div>
   </div>
   <div class="step-list">
     <div class="step-item">
-      <div class="step-badge" style="background:var(--orange)">1</div>
+      <div class="step-badge" style="background:var(--lime)">1</div>
       <div class="step-body">
         <strong>무인 모드 해제</strong>
         <p>오전 10시 출근 직후, 전화 <span class="hi">수화기를 들어</span> 무인 모드 해제<br>
-        <span style="color:var(--muted);font-size:12px">03:00 ~ 10:00 무인 시간</span></p>
+        <span style="color:var(--muted2);font-size:12px">03:00 ~ 10:00 무인 시간</span></p>
       </div>
     </div>
     <div class="step-item">
-      <div class="step-badge" style="background:var(--orange)">2</div>
+      <div class="step-badge" style="background:var(--lime)">2</div>
       <div class="step-body">
         <strong>불 켜기</strong>
         <p><span class="warn">서버실 제외</span> 모든 불 켜기 (주방 포함)</p>
       </div>
     </div>
     <div class="step-item">
-      <div class="step-badge" style="background:var(--orange)">3</div>
+      <div class="step-badge" style="background:var(--lime)">3</div>
       <div class="step-body">
         <strong>열쇠 관리</strong>
         <p><span class="ok">투명 봉지에 쌓인 열쇠</span> → 돈통 아래 보관 (쓸모없음)<br>
@@ -377,16 +528,16 @@ body {
   </div>
 </div>
 
-<!-- ════════════ 정산 ════════════ -->
+<!-- ════ 정산 ════ -->
 <div class="page" id="settle">
-  <button class="back-btn" onclick="go('home')">← 메인으로</button>
-  <div class="detail-header">
-    <div class="detail-eyebrow" style="color:var(--amber)">SECTION 02</div>
-    <div class="detail-title">정산 <span class="accent">방법</span></div>
+  <div class="sec-header">
+    <div class="sec-num">02</div>
+    <div class="sec-tag">Cash Settlement</div>
+    <div class="sec-title">정산 <span class="acc">방법</span></div>
   </div>
   <div class="two-col">
     <div>
-      <div class="col-label" style="color:var(--amber);border-bottom:1px solid rgba(245,166,35,0.2)">정산 흐름</div>
+      <div class="col-label">정산 흐름</div>
       <div class="step-list">
         <div class="step-item">
           <div class="step-badge" style="background:var(--amber)">1</div>
@@ -409,76 +560,76 @@ body {
             <strong>현금 출금 후 봉투에</strong>
             <p>오른쪽 금액만큼 현금 출금 → 봉투에 넣기<br>
             <span class="hi">돈통 잔액은 항상 20만원 유지</span><br>
-            <span style="font-size:12px;color:var(--muted)">돈통 아래 100원 50개 포함해서 맞추기</span></p>
+            <span style="font-size:12px;color:var(--muted2)">돈통 아래 100원 50개 포함해서 맞추기</span></p>
           </div>
         </div>
       </div>
       <div class="note">⚠️ 계좌이체 내역 있으면 그 금액만큼 20만원에서 빠짐. 공책에 적고 의사소통 문제 없으면 동그라미</div>
     </div>
     <div>
-      <div class="col-label" style="color:var(--teal);border-bottom:1px solid rgba(0,201,167,0.2)">정산 시간 & 근무교대</div>
+      <div class="col-label">정산 시간 &amp; 근무교대</div>
       <table class="info-tbl">
         <tr><td>1차 정산</td><td><strong>오전 10시</strong></td></tr>
         <tr><td>2차 정산</td><td>근무 교대할 때</td></tr>
         <tr><td>3차 정산</td><td>자정 근처</td></tr>
         <tr><td>인수자</td><td><strong>사장님</strong></td></tr>
-        <tr><td>비밀번호</td><td><span class="hi" style="font-size:16px;font-family:'Bebas Neue';letter-spacing:2px">***</span></td></tr>
+        <tr><td>비밀번호</td><td><span class="hi" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:2px">***</span></td></tr>
       </table>
     </div>
   </div>
 </div>
 
-<!-- ════════════ 청소 ════════════ -->
+<!-- ════ 청소 ════ -->
 <div class="page" id="clean">
-  <button class="back-btn" onclick="go('home')">← 메인으로</button>
-  <div class="detail-header">
-    <div class="detail-eyebrow" style="color:var(--teal)">SECTION 03</div>
-    <div class="detail-title">청소 <span class="accent">순서</span></div>
+  <div class="sec-header">
+    <div class="sec-num">03</div>
+    <div class="sec-tag">Cleaning Procedure</div>
+    <div class="sec-title">청소 <span class="acc">순서</span></div>
   </div>
   <div class="step-list">
     <div class="step-item">
-      <div class="step-badge" style="background:var(--teal)">①</div>
+      <div class="step-badge" style="background:var(--cyan)">①</div>
       <div class="step-body"><strong>화재 방지용 물 버리기</strong></div>
     </div>
     <div class="step-item">
-      <div class="step-badge" style="background:var(--teal)">②</div>
+      <div class="step-badge" style="background:var(--cyan)">②</div>
       <div class="step-body"><strong>화장실 청소</strong></div>
     </div>
     <div class="step-item">
-      <div class="step-badge" style="background:var(--teal)">③</div>
+      <div class="step-badge" style="background:var(--cyan)">③</div>
       <div class="step-body">
         <strong>바깥 계단 청소</strong>
         <p>2층→1층 바닥 쓸기 / <span class="ok">2층 물걸레</span> 청소 (1층은 당구장이 함)</p>
       </div>
     </div>
     <div class="step-item">
-      <div class="step-badge" style="background:var(--teal)">④</div>
+      <div class="step-badge" style="background:var(--cyan)">④</div>
       <div class="step-body">
         <strong>1번 ~ 4번 라인 청소</strong>
         <p>자리 정리는 하루에도 <span class="ok">수시로</span></p>
       </div>
     </div>
     <div class="step-item">
-      <div class="step-badge" style="background:var(--teal)">⑤</div>
+      <div class="step-badge" style="background:var(--cyan)">⑤</div>
       <div class="step-body"><strong>흡연실 청소</strong></div>
     </div>
     <div class="step-item">
-      <div class="step-badge" style="background:var(--teal)">⑥</div>
+      <div class="step-badge" style="background:var(--cyan)">⑥</div>
       <div class="step-body"><strong>카운터 청소</strong></div>
     </div>
   </div>
   <div class="note">🥤 <strong>빨대 구분</strong> — 왼쪽 = 새 것 / 오른쪽 = 헌 것 · 빨대만 빼고 나머지 재사용</div>
 </div>
 
-<!-- ════════════ 요리 ════════════ -->
+<!-- ════ 요리 ════ -->
 <div class="page" id="cook">
-  <button class="back-btn" onclick="go('home')">← 메인으로</button>
+  <div class="sec-header">
+    <div class="sec-num">04</div>
+    <div class="sec-tag">Cooking Manual</div>
+    <div class="sec-title">요리 <span class="acc">매뉴얼</span></div>
+  </div>
 
   <div id="cook-menu">
-    <div class="detail-header">
-      <div class="detail-eyebrow" style="color:var(--pink)">SECTION 04</div>
-      <div class="detail-title">요리 <span class="accent">매뉴얼</span></div>
-    </div>
     <div class="sub-menu">
       <div class="sub-card" onclick="showSub('cook-basic')">
         <span class="sub-icon">🔥</span>
@@ -493,7 +644,7 @@ body {
       <div class="sub-card" onclick="showSub('cook-noodle')">
         <span class="sub-icon">🍜</span>
         <div class="sub-title">면류 / 튀김</div>
-        <div class="sub-desc">라면, 핫도그, 감자튀김 등</div>
+        <div class="sub-desc">라면, 핫도그, 감자튀김</div>
       </div>
       <div class="sub-card" onclick="showSub('cook-drink')">
         <span class="sub-icon">☕</span>
@@ -507,30 +658,30 @@ body {
   <div class="sub-content" id="cook-basic">
     <button class="sub-back" onclick="hideSub()">← 요리 메뉴로</button>
     <div class="card-grid g2">
-      <div class="info-card bt-orange">
-        <div class="label" style="color:var(--orange)">왼쪽 인덕션</div>
-        <div class="title">달걀</div>
-        <div class="body">온도 <span class="hi">140도</span> · 기름 침 · <strong>뒤집지 않음</strong><br>
+      <div class="info-card ca-red">
+        <div class="c-label" style="color:var(--red)">왼쪽 인덕션</div>
+        <div class="c-title">달걀</div>
+        <div class="c-body">온도 <span class="hi">140도</span> · 기름 침 · <strong>뒤집지 않음</strong><br>
         <span class="warn">치킨마요덮밥 제조 시엔 스크램블 (180도)</span></div>
       </div>
-      <div class="info-card bt-orange">
-        <div class="label" style="color:var(--orange)">오른쪽 인덕션</div>
-        <div class="title">삼겹살 / 스팸 등</div>
-        <div class="body">삼겹살 온도 <span class="hi">120도</span> · 기름 X · 잘 뒤집기<br>
+      <div class="info-card ca-red">
+        <div class="c-label" style="color:var(--red)">오른쪽 인덕션</div>
+        <div class="c-title">삼겹살 / 스팸 등</div>
+        <div class="c-body">삼겹살 온도 <span class="hi">120도</span> · 기름 X · 잘 뒤집기<br>
         먼저 <strong>40초 해동</strong> · 파슬리 넣으면 좋음<br>
         MODE: 볶음(왼쪽) / 후라이(오른쪽)</div>
       </div>
-      <div class="info-card bt-blue">
-        <div class="label" style="color:var(--blue)">튀김기</div>
-        <div class="title">튀김기 사용법</div>
-        <div class="body">평소: <span class="hi">11시 방향</span> (예열 상태)<br>
+      <div class="info-card ca-blue">
+        <div class="c-label" style="color:var(--blue)">튀김기</div>
+        <div class="c-title">튀김기 사용법</div>
+        <div class="c-body">평소: <span class="hi">11시 방향</span> (예열 상태)<br>
         조리 전: 시계방향 <strong>최대로</strong> 돌린 후 몇 초 뒤 투하<br>
         타임워치 버튼 2개 동시 = 0초 초기화</div>
       </div>
-      <div class="info-card bt-teal">
-        <div class="label" style="color:var(--teal)">밥솥</div>
-        <div class="title">밥 하는 법</div>
-        <div class="body">쌀 <strong>고봉 4그릇</strong> / 물: <span class="hi">손목 시작 부분까지</span><br>
+      <div class="info-card ca-cyan">
+        <div class="c-label" style="color:var(--cyan)">밥솥</div>
+        <div class="c-title">밥 하는 법</div>
+        <div class="c-body">쌀 <strong>고봉 4그릇</strong> / 물: <span class="hi">손목 시작 부분까지</span><br>
         취소 → 취사 (취사 한 번 더 = 급속 취사)</div>
       </div>
     </div>
@@ -540,45 +691,45 @@ body {
   <div class="sub-content" id="cook-rice">
     <button class="sub-back" onclick="hideSub()">← 요리 메뉴로</button>
     <div class="card-grid g3">
-      <div class="info-card bt-orange">
-        <div class="label" style="color:var(--orange)">덮밥</div>
-        <div class="title">치킨마요덮밥</div>
-        <div class="body">팝콘치킨 <strong>2분</strong> → 반 잘라 8조각 → <strong>다시 2분</strong><br>
+      <div class="info-card ca-amber">
+        <div class="c-label" style="color:var(--amber)">덮밥</div>
+        <div class="c-title">치킨마요덮밥</div>
+        <div class="c-body">팝콘치킨 <strong>2분</strong> → 반 잘라 8조각 → <strong>다시 2분</strong><br>
         <span class="ok">보통</span>: 마요네즈 + 데리야키<br>
         <span class="warn">매운</span>: 마요 + 데리야키 + 매운 데리야키 <span class="hi">(2:1:1)</span><br>
         아무것도 뿌리지 않고 나감</div>
       </div>
-      <div class="info-card bt-orange">
-        <div class="label" style="color:var(--orange)">덮밥</div>
-        <div class="title">치킨카레</div>
-        <div class="body">밥 + 3분카레 (전자레인지 <strong>2분 30초</strong>)<br>+ 치킨마요 치킨 그대로</div>
+      <div class="info-card ca-amber">
+        <div class="c-label" style="color:var(--amber)">덮밥</div>
+        <div class="c-title">치킨카레</div>
+        <div class="c-body">밥 + 3분카레 (전자레인지 <strong>2분 30초</strong>)<br>+ 치킨마요 치킨 그대로</div>
       </div>
-      <div class="info-card bt-orange">
-        <div class="label" style="color:var(--orange)">덮밥</div>
-        <div class="title">김치볶음밥 / 낙지덮밥</div>
-        <div class="body">완제품 전자레인지 <span class="hi">4분</span><br>
+      <div class="info-card ca-amber">
+        <div class="c-label" style="color:var(--amber)">덮밥</div>
+        <div class="c-title">김치볶음밥 / 낙지덮밥</div>
+        <div class="c-body">완제품 전자레인지 <span class="hi">4분</span><br>
         제육덮밥 외 덮밥: <strong>달걀후라이</strong> 나감<br>
-        <span style="color:var(--muted);font-size:11px">(김치볶음밥 제외)</span></div>
+        <span style="font-size:11px;color:var(--muted2)">(김치볶음밥 제외)</span></div>
       </div>
-      <div class="info-card bt-amber">
-        <div class="label" style="color:var(--amber)">밥 메뉴</div>
-        <div class="title">간장계란밥</div>
-        <div class="body">밥 + 간장 + 참기름<br>
+      <div class="info-card ca-lime">
+        <div class="c-label" style="color:var(--lime)">밥 메뉴</div>
+        <div class="c-title">간장계란밥</div>
+        <div class="c-body">밥 + 간장 + 참기름<br>
         <span class="hi">깨 먼저</span> 뿌리고 달걀후라이 얹기<br>
         <span class="warn">깨가 후라이 아래 들어가야 함!</span><br>
-        <span style="color:var(--muted);font-size:11px">(깨 = 어니언 가루 옆)</span></div>
+        <span style="font-size:11px;color:var(--muted2)">(깨 = 어니언 가루 옆)</span></div>
       </div>
-      <div class="info-card bt-teal">
-        <div class="label" style="color:var(--teal)">분식</div>
-        <div class="title">떡볶이 / 라볶이</div>
-        <div class="body"><strong>떡 15개</strong> + 어묵 3개 + 소스 고봉 1스푼 → 떡볶이 MODE<br>
+      <div class="info-card ca-cyan">
+        <div class="c-label" style="color:var(--cyan)">분식</div>
+        <div class="c-title">떡볶이 / 라볶이</div>
+        <div class="c-body"><strong>떡 15개</strong> + 어묵 3개 + 소스 고봉 1스푼 → 떡볶이 MODE<br>
         <span class="hi">라볶이</span>: 떡 좀 덜 + 라면사리 반 개 + 물 약간 추가<br>
         <span class="warn">돈가스·떡볶이 = 포크 / 돈가스는 밥 없음</span></div>
       </div>
-      <div class="info-card bt-blue">
-        <div class="label" style="color:var(--blue)">찌개</div>
-        <div class="title">부대찌개 / 김치찌개</div>
-        <div class="body"><strong>1분 30초 해동</strong> → 라면기, 해물라면 모드<br>
+      <div class="info-card ca-blue">
+        <div class="c-label" style="color:var(--blue)">찌개</div>
+        <div class="c-title">부대찌개 / 김치찌개</div>
+        <div class="c-body"><strong>1분 30초 해동</strong> → 라면기, 해물라면 모드<br>
         부대찌개: 라면사리 반 개 있으면 좋음<br>
         밥은 고봉밥으로</div>
       </div>
@@ -589,43 +740,43 @@ body {
   <div class="sub-content" id="cook-noodle">
     <button class="sub-back" onclick="hideSub()">← 요리 메뉴로</button>
     <div class="card-grid g3">
-      <div class="info-card bt-blue">
-        <div class="label" style="color:var(--blue)">면류</div>
-        <div class="title">라면</div>
-        <div class="body">달걀: <span class="hi">물 끓기 시작할 때</span> 넣고 슬슬 풀기<br>
+      <div class="info-card ca-blue">
+        <div class="c-label" style="color:var(--blue)">면류</div>
+        <div class="c-title">라면</div>
+        <div class="c-body">달걀: <span class="hi">물 끓기 시작할 때</span> 넣고 슬슬 풀기<br>
         <strong>팔도비빔면</strong>: 라면 MODE / 소스는 뿌리기만 (버무리지 않음)</div>
       </div>
-      <div class="info-card bt-blue">
-        <div class="label" style="color:var(--blue)">면류</div>
-        <div class="title">짜빠구리</div>
-        <div class="body">면 <strong>2개</strong><br>
+      <div class="info-card ca-blue">
+        <div class="c-label" style="color:var(--blue)">면류</div>
+        <div class="c-title">짜빠구리</div>
+        <div class="c-body">면 <strong>2개</strong><br>
         너구리 안 다시다 빼기<br>
         너구리 분말 <span class="warn">엄지만큼 빼기</span> (너무 짜서)</div>
       </div>
-      <div class="info-card bt-pink">
-        <div class="label" style="color:var(--pink)">튀김</div>
-        <div class="title">감자튀김</div>
-        <div class="body">튀김기 <strong>2분</strong><br>
+      <div class="info-card ca-purple">
+        <div class="c-label" style="color:var(--purple)">튀김</div>
+        <div class="c-title">감자튀김</div>
+        <div class="c-body">튀김기 <strong>2분</strong><br>
         케첩은 <span class="hi">한 군데 몰아서</span><br>
         집게로 옮기기</div>
       </div>
-      <div class="info-card bt-pink">
-        <div class="label" style="color:var(--pink)">튀김</div>
-        <div class="title">핫도그</div>
-        <div class="body">빵: 칼집 + 물 뿌려 <strong>30초</strong> 전자레인지 / 소시지: <strong>1분</strong><br>
+      <div class="info-card ca-purple">
+        <div class="c-label" style="color:var(--purple)">튀김</div>
+        <div class="c-title">핫도그</div>
+        <div class="c-body">빵: 칼집 + 물 뿌려 <strong>30초</strong> 전자레인지 / 소시지: <strong>1분</strong><br>
         홀그레인 소스 → 피클 3개 → 손님 소스 → <span class="hi">어니언 가루 마지막</span></div>
       </div>
-      <div class="info-card bt-pink">
-        <div class="label" style="color:var(--pink)">튀김</div>
-        <div class="title">치킨꼬치</div>
-        <div class="body">가운데 냉장고 첫 번째칸 왼쪽<br>
+      <div class="info-card ca-purple">
+        <div class="c-label" style="color:var(--purple)">튀김</div>
+        <div class="c-title">치킨꼬치</div>
+        <div class="c-body">가운데 냉장고 첫 번째칸 왼쪽<br>
         <span class="warn">꼬치째로 튀김기에</span> (꼬치 매우 뜨거움!)<br>
         휴지로 싸서 나가기</div>
       </div>
-      <div class="info-card bt-orange">
-        <div class="label" style="color:var(--orange)">돈가스</div>
-        <div class="title">돈가스</div>
-        <div class="body"><span class="warn">밥 안 나감</span> · 포크 나감</div>
+      <div class="info-card ca-amber">
+        <div class="c-label" style="color:var(--amber)">돈가스</div>
+        <div class="c-title">돈가스</div>
+        <div class="c-body"><span class="warn">밥 안 나감</span> · 포크 나감</div>
       </div>
     </div>
   </div>
@@ -633,33 +784,33 @@ body {
   <!-- 음료 -->
   <div class="sub-content" id="cook-drink">
     <button class="sub-back" onclick="hideSub()">← 요리 메뉴로</button>
-    <div class="card-grid g3">
-      <div class="info-card bt-amber">
-        <div class="label" style="color:var(--amber)">커피</div>
-        <div class="title">카페라테</div>
-        <div class="body">스팀 컵에 우유 <strong>절반</strong> → 스팀기 담가 레버 돌리기<br>
+    <div class="card-grid g2">
+      <div class="info-card ca-amber">
+        <div class="c-label" style="color:var(--amber)">커피</div>
+        <div class="c-title">카페라테</div>
+        <div class="c-body">스팀 컵에 우유 <strong>절반</strong> → 스팀기 담가 레버 돌리기<br>
         바닥이 뜨거워질 때까지 (부피 부풂)<br>
         에스프레소 + 후물 커피 섞기<br>
         <span class="warn">스팀기 주둥이 바로 닦기!</span></div>
       </div>
-      <div class="info-card bt-amber">
-        <div class="label" style="color:var(--amber)">커피</div>
-        <div class="title">아샷추</div>
-        <div class="body">아메리카노 + 아이스티<br>
+      <div class="info-card ca-amber">
+        <div class="c-label" style="color:var(--amber)">커피</div>
+        <div class="c-title">아샷추</div>
+        <div class="c-body">아메리카노 + 아이스티<br>
         후물로 만들면 <span class="hi">후물 약간 더 추가</span></div>
       </div>
-      <div class="info-card bt-teal">
-        <div class="label" style="color:var(--teal)">음료</div>
-        <div class="title">초코우유 (아이스)</div>
-        <div class="body">코코아 <span class="hi">고봉 1스푼</span> + 뜨거운 물 1/3 → 녹임<br>
+      <div class="info-card ca-cyan">
+        <div class="c-label" style="color:var(--cyan)">음료</div>
+        <div class="c-title">초코우유 (아이스)</div>
+        <div class="c-body">코코아 <span class="hi">고봉 1스푼</span> + 뜨거운 물 1/3 → 녹임<br>
         시럽 → 일회용 컵 → 얼음 가득 + 차가운 우유<br>
-        <span style="color:var(--muted);font-size:11px">핫: 스팀 컵 우유 3/4 스팀 후 플라스틱 컵</span><br>
-        <span style="color:var(--muted);font-size:11px">녹차라떼도 동일 과정</span></div>
+        <span style="font-size:11px;color:var(--muted2)">핫: 스팀 컵 우유 3/4 스팀 후 플라스틱 컵</span><br>
+        <span style="font-size:11px;color:var(--muted2)">녹차라떼도 동일 과정</span></div>
       </div>
-      <div class="info-card bt-teal">
-        <div class="label" style="color:var(--teal)">에이드 / 기타</div>
-        <div class="title">에이드 / 요거트</div>
-        <div class="body"><strong>에이드</strong>: 시럽 손톱 두께<br>
+      <div class="info-card ca-cyan">
+        <div class="c-label" style="color:var(--cyan)">에이드 / 기타</div>
+        <div class="c-title">에이드 / 요거트</div>
+        <div class="c-body"><strong>에이드</strong>: 시럽 손톱 두께<br>
         <strong>체리에이드</strong>: 가루 <span class="hi">3스푼</span><br>
         <strong>요거트</strong>: 펌프 <span class="hi">2회</span></div>
       </div>
@@ -667,115 +818,122 @@ body {
   </div>
 </div>
 
-<!-- ════════════ 오픈/마감 ════════════ -->
+<!-- ════ 오픈/마감 ════ -->
 <div class="page" id="close">
-  <button class="back-btn" onclick="go('home')">← 메인으로</button>
-  <div class="detail-header">
-    <div class="detail-eyebrow" style="color:var(--blue)">SECTION 05</div>
-    <div class="detail-title">오픈 / 마감 <span class="accent">체크리스트</span></div>
+  <div class="sec-header">
+    <div class="sec-num">05</div>
+    <div class="sec-tag">Open / Close Checklist</div>
+    <div class="sec-title">오픈 / 마감 <span class="acc">체크리스트</span></div>
   </div>
   <div class="two-col">
     <div>
-      <div class="col-label" style="color:var(--orange);border-bottom:1px solid rgba(255,107,53,0.2)">🔓 오픈</div>
+      <div class="col-label" style="color:var(--lime)">🔓 오픈</div>
       <div class="check-list">
-        <div class="check-item"><div class="check-dot" style="background:var(--orange)"></div>서버실 제외 불 다 켜기</div>
-        <div class="check-item"><div class="check-dot" style="background:var(--orange)"></div>전화로 관제 종료하기</div>
-        <div class="check-item"><div class="check-dot" style="background:var(--orange)"></div>과자 진열하기</div>
-        <div class="check-item"><div class="check-dot" style="background:var(--orange)"></div>판넬 치우기</div>
-        <div class="check-item"><div class="check-dot" style="background:var(--orange)"></div>의자 빼고 자리 쓸고 닦기<br><span style="font-size:11px;color:var(--muted)">(의자 빼기: 하루 두 줄 / 복도 닦기: 매일)</span></div>
-        <div class="check-item"><div class="check-dot" style="background:var(--orange)"></div>흡연실 청소</div>
-        <div class="check-item"><div class="check-dot" style="background:var(--orange)"></div>화장실 청소</div>
-        <div class="check-item"><div class="check-dot" style="background:var(--orange)"></div>1차 정산</div>
-        <div class="check-item"><div class="check-dot" style="background:var(--orange)"></div>복도 청소</div>
+        <div class="check-item"><div class="check-dot" style="background:var(--lime)"></div>서버실 제외 불 다 켜기</div>
+        <div class="check-item"><div class="check-dot" style="background:var(--lime)"></div>전화로 관제 종료하기</div>
+        <div class="check-item"><div class="check-dot" style="background:var(--lime)"></div>과자 진열하기</div>
+        <div class="check-item"><div class="check-dot" style="background:var(--lime)"></div>판넬 치우기</div>
+        <div class="check-item"><div class="check-dot" style="background:var(--lime)"></div>
+          의자 빼고 자리 쓸고 닦기<br>
+          <span style="font-size:11px;color:var(--muted2)">(의자 빼기: 하루 두 줄 / 복도 닦기: 매일)</span>
+        </div>
+        <div class="check-item"><div class="check-dot" style="background:var(--lime)"></div>흡연실 청소</div>
+        <div class="check-item"><div class="check-dot" style="background:var(--lime)"></div>화장실 청소</div>
+        <div class="check-item"><div class="check-dot" style="background:var(--lime)"></div>1차 정산</div>
+        <div class="check-item"><div class="check-dot" style="background:var(--lime)"></div>복도 청소</div>
         <div class="check-item" style="color:var(--amber)"><div class="check-dot" style="background:var(--amber)"></div><strong>10:30~11:00</strong> 사이 열쇠 가지러 올 것</div>
       </div>
     </div>
     <div>
-      <div class="col-label" style="color:var(--teal);border-bottom:1px solid rgba(0,201,167,0.2)">🌙 마감</div>
+      <div class="col-label" style="color:var(--cyan)">🌙 마감</div>
       <div class="check-list">
-        <div class="check-item"><div class="check-dot" style="background:var(--teal)"></div>과자 치우기</div>
-        <div class="check-item"><div class="check-dot" style="background:var(--teal)"></div>오른쪽 주방 청소<br><span style="font-size:11px;color:var(--muted)">(기름기·튀김가루 닦기 / 튀김기 기름 채로 거르기)</span></div>
-        <div class="check-item"><div class="check-dot" style="background:var(--teal)"></div>왼쪽 주방 청소</div>
-        <div class="check-item"><div class="check-dot" style="background:var(--teal)"></div>흡연실</div>
-        <div class="check-item"><div class="check-dot" style="background:var(--teal)"></div>화장실</div>
-        <div class="check-item"><div class="check-dot" style="background:var(--teal)"></div>음료수 냉장고 잠그기</div>
-        <div class="check-item"><div class="check-dot" style="background:var(--teal)"></div>불 끄기</div>
-        <div class="check-item"><div class="check-dot" style="background:var(--teal)"></div>판넬 막기</div>
-        <div class="check-item" style="color:var(--teal)"><div class="check-dot" style="background:var(--teal)"></div>전화로 관제 시작 <strong style="color:var(--teal)">("방송도 해주세요." 당부)</strong></div>
+        <div class="check-item"><div class="check-dot" style="background:var(--cyan)"></div>과자 치우기</div>
+        <div class="check-item"><div class="check-dot" style="background:var(--cyan)"></div>
+          오른쪽 주방 청소<br>
+          <span style="font-size:11px;color:var(--muted2)">(기름기·튀김가루 닦기 / 튀김기 기름 채로 거르기)</span>
+        </div>
+        <div class="check-item"><div class="check-dot" style="background:var(--cyan)"></div>왼쪽 주방 청소</div>
+        <div class="check-item"><div class="check-dot" style="background:var(--cyan)"></div>흡연실</div>
+        <div class="check-item"><div class="check-dot" style="background:var(--cyan)"></div>화장실</div>
+        <div class="check-item"><div class="check-dot" style="background:var(--cyan)"></div>음료수 냉장고 잠그기</div>
+        <div class="check-item"><div class="check-dot" style="background:var(--cyan)"></div>불 끄기</div>
+        <div class="check-item"><div class="check-dot" style="background:var(--cyan)"></div>판넬 막기</div>
+        <div class="check-item" style="color:var(--cyan)"><div class="check-dot" style="background:var(--cyan)"></div>전화로 관제 시작 <strong style="color:var(--cyan)">("방송도 해주세요." 당부)</strong></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ════════════ 기타 ════════════ -->
+<!-- ════ 기타 ════ -->
 <div class="page" id="etc">
-  <button class="back-btn" onclick="go('home')">← 메인으로</button>
-  <div class="detail-header">
-    <div class="detail-eyebrow" style="color:var(--green)">SECTION 06</div>
-    <div class="detail-title">기타 <span class="accent">사항</span></div>
+  <div class="sec-header">
+    <div class="sec-num">06</div>
+    <div class="sec-tag">Miscellaneous</div>
+    <div class="sec-title">기타 <span class="acc">사항</span></div>
   </div>
   <div class="card-grid g3">
-    <div class="info-card bt-blue">
-      <div class="label" style="color:var(--blue)">비밀번호</div>
-      <div class="title">냉장고 비밀번호</div>
-      <div class="body"><span class="hi" style="font-size:32px;font-family:'Bebas Neue';letter-spacing:6px">***</span></div>
+    <div class="info-card ca-blue">
+      <div class="c-label" style="color:var(--blue)">비밀번호</div>
+      <div class="c-title">냉장고 비밀번호</div>
+      <div class="c-body"><span class="hi" style="font-size:28px;font-family:'JetBrains Mono',monospace;letter-spacing:4px">000</span></div>
     </div>
-    <div class="info-card bt-green">
-      <div class="label" style="color:var(--green)">회원 관리</div>
-      <div class="title">회원 초기 비밀번호</div>
-      <div class="body"><span class="hi" style="font-size:18px;font-family:'Bebas Neue';letter-spacing:2px">***</span><br>
-      <span style="color:var(--muted);font-size:11px">회원관리 → 회원정보 수정</span></div>
+    <div class="info-card ca-lime">
+      <div class="c-label" style="color:var(--lime)">회원 관리</div>
+      <div class="c-title">회원 초기 비밀번호</div>
+      <div class="c-body"><span class="hi" style="font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:1px">123456789a</span><br>
+      <span style="font-size:11px;color:var(--muted2)">회원관리 → 회원정보 수정</span></div>
     </div>
-    <div class="info-card bt-orange">
-      <div class="label" style="color:var(--orange)">행주 구분</div>
-      <div class="title">행주 위치</div>
-      <div class="body"><span style="color:#4CAF50">●</span> <strong>초록색</strong> → 왼쪽 싱크대<br>
-      <span style="color:#FFD600">●</span> <strong>노란색</strong> → 오른쪽 싱크대</div>
+    <div class="info-card ca-amber">
+      <div class="c-label" style="color:var(--amber)">행주 구분</div>
+      <div class="c-title">행주 위치</div>
+      <div class="c-body"><span style="color:#4CAF50;font-size:16px">●</span> <strong>초록색</strong> → 왼쪽 싱크대<br>
+      <span style="color:#FFD600;font-size:16px">●</span> <strong>노란색</strong> → 오른쪽 싱크대</div>
     </div>
-    <div class="info-card bt-pink">
-      <div class="label" style="color:var(--pink)">단골 손님</div>
-      <div class="title">***</div>
-      <div class="body">*** / 와이즈토토<br>
-      현금 구매 시 <span class="warn">상품판매 절차</span> 진행</div>
+    <div class="info-card ca-red">
+      <div class="c-label" style="color:var(--red)">단골 손님</div>
+      <div class="c-title">단골 A</div>
+      <div class="c-body">와이즈토토 이용<br>현금 구매 시 <span class="warn">상품판매 절차</span> 진행</div>
     </div>
-    <div class="info-card bt-amber">
-      <div class="label" style="color:var(--amber)">단골 손님</div>
-      <div class="title">***</div>
-      <div class="body">단골 손님<br><span class="hi">단무지</span> 드리기</div>
+    <div class="info-card ca-purple">
+      <div class="c-label" style="color:var(--purple)">단골 손님</div>
+      <div class="c-title">단골 B</div>
+      <div class="c-body">자주 오시는 분<br><span class="hi">단무지</span> 드리기</div>
     </div>
-    <div class="info-card bt-teal">
-      <div class="label" style="color:var(--teal)">배송</div>
-      <div class="title">배송 물건 처리</div>
-      <div class="body">장부에 <strong>동그라미</strong> 치기<br>창고 열쇠로 열어 <strong>창고에 보관</strong></div>
+    <div class="info-card ca-cyan">
+      <div class="c-label" style="color:var(--cyan)">배송</div>
+      <div class="c-title">배송 물건 처리</div>
+      <div class="c-body">장부에 <strong>동그라미</strong> 치기<br>창고 열쇠로 열어 <strong>창고에 보관</strong></div>
     </div>
   </div>
 </div>
 
 <script>
-function go(pageId) {
+function go(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const target = document.getElementById(pageId);
-  target.classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => {
+    if (t.getAttribute('onclick') === `go('${id}')`) t.classList.add('active');
+  });
   window.scrollTo(0, 0);
-  if (pageId === 'cook') {
+  if (id === 'cook') {
     document.getElementById('cook-menu').style.display = 'block';
     document.querySelectorAll('.sub-content').forEach(s => s.classList.remove('active'));
   }
   // 애니메이션 재실행
-  target.querySelectorAll('.step-item, .info-card, .check-item, .sub-card, .menu-card, .detail-header').forEach(el => {
+  const page = document.getElementById(id);
+  page.querySelectorAll('.menu-card,.step-item,.info-card,.check-item').forEach(el => {
     el.style.animation = 'none';
     el.offsetHeight;
     el.style.animation = '';
   });
 }
-
 function showSub(id) {
   document.getElementById('cook-menu').style.display = 'none';
   document.querySelectorAll('.sub-content').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0, 0);
 }
-
 function hideSub() {
   document.querySelectorAll('.sub-content').forEach(s => s.classList.remove('active'));
   document.getElementById('cook-menu').style.display = 'block';
